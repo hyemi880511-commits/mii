@@ -1,33 +1,53 @@
 export default function Home() {
   return (
-    <div className="container">
-      <section className="section">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          성과중심{" "}
-          <span className="text-[var(--brand)]">분양광고대행사</span>
-          <br />
-          분양은만별
-        </h1>
+    <>
+      <section className="section" style={{ background: "#fff" }}>
+        <div className="container">
+          <div className="h1">
+            성과중심 <span style={{ color: "#ff6600" }}>분양은만별</span>.
+          </div>
+          <p className="p" style={{ marginTop: 14, maxWidth: 720 }}>
+            지금은 “공통 뼈대(로딩/헤더/푸터/퀵/햄버거/커서/폰트/반응형)”만 먼저
+            깔아두는 단계야. 메인 11섹션은 다음 스텝에서 그대로 얹어줄게.
+          </p>
 
-        <p className="mt-6 max-w-2xl text-white/70">
-          공통(로딩/헤더/푸터/퀵/전체메뉴) 뼈대 적용 완료.
-          다음은 메인 11섹션 디자인/CMS/SEO로 진행합니다.
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-2">
-          <a className="btn btn-brand" href="/consult">상담접수</a>
-          <a className="btn" href="https://pf.kakao.com" target="_blank" rel="noreferrer">
-            카톡상담
-          </a>
-          <a className="btn" href="tel:8218661123">전화</a>
+          <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
+            <a className="btn primary" href="#consult">
+              상담 접수
+            </a>
+            <a className="btn" href="#download">
+              다운로드
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="section border-t border-white/10">
-        <div className="text-white/70">
-          ✅ Pretendard / 반응형 / 최대1600 / 가로스크롤 방지 / 커서링 적용됨
+      <section className="section" style={{ background: "#000", color: "#fff" }}>
+        <div className="container">
+          <div className="h2">왜 분양은 만별일까요?</div>
+          <p className="p" style={{ marginTop: 12, maxWidth: 720 }}>
+            (여기에 5장 스와이프 카드 / dot / 무한루프 들어갈 예정)
+          </p>
         </div>
       </section>
-    </div>
+
+      <section className="section" id="consult" style={{ background: "#fff" }}>
+        <div className="container">
+          <div className="h2">상담 접수</div>
+          <p className="p" style={{ marginTop: 12, maxWidth: 720 }}>
+            (여기에 폼 + 카톡상담 연결 들어갈 예정)
+          </p>
+        </div>
+      </section>
+
+      <section className="section" id="download" style={{ background: "#f7f7f7" }}>
+        <div className="container">
+          <div className="h2">다운로드</div>
+          <p className="p" style={{ marginTop: 12, maxWidth: 720 }}>
+            (지명원/상품소개서 링크 영역)
+          </p>
+        </div>
+      </section>
+    </>
   );
 }
