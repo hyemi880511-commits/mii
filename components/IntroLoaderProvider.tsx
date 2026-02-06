@@ -11,13 +11,12 @@ export default function IntroLoaderProvider({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // 탭(세션)에서 1번만 보여주고 싶으면 sessionStorage 사용
     const key = "intro_done";
     const done = sessionStorage.getItem(key);
 
     if (!done) {
       setShow(true);
-      // 로더 떠있는 동안 스크롤 잠금
+      // 로더 동안 스크롤 잠금
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     }
@@ -32,7 +31,8 @@ export default function IntroLoaderProvider({
 
   return (
     <>
-      {children}
+      {/* 로더가 위에 떠야 하니까 children보다 아래에 있어도 z-index로 덮지만,
+          렌더 순서도 직관적으로 하려면 로더를 먼저 두는 편이 좋아 */}
       {show && (
         <IntroLoader
           text="성과중심 분양은만별."
@@ -41,6 +41,7 @@ export default function IntroLoaderProvider({
           onDone={handleDone}
         />
       )}
+      {children}
     </>
   );
 }
