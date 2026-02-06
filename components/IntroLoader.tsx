@@ -1,69 +1,70 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-
-const TEXT = "성과중심 분양은만별.";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function IntroLoader() {
-  const [done, setDone] = useState(false);
-  const [i, setI] = useState(0);
-
-  const shown = useMemo(() => TEXT.slice(0, i), [i]);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
-    const t = setInterval(() => {
-      setI((p) => {
-        if (p >= TEXT.length) {
-          clearInterval(t);
-          setTimeout(() => setDone(true), 450);
-          return p;
-        }
-        return p + 1;
-      });
-    }, 70);
-    return () => clearInterval(t);
+    // 새로고침마다 로딩 안 나오게 하려면 유지
+    const done = sessionStorage.getItem("introDone");
+    if (done) setShow(false);
   }, []);
 
-  if (done) return null;
+  const DURATION = 1.0; // 애니 속도(느리면 0.8~0.9로)
+
+  if (!show) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9998,
-        background: "#fff",
-        display: "grid",
-        placeItems: "center",
-      }}
-    >
-      <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: "-0.02em" }}>
-          {shown}
-          <span
-            style={{
-              display: "inline-block",
-              width: 8,
-              height: 22,
-              background: "#ff6600",
-              marginLeft: 6,
-              verticalAlign: "middle",
-              animation: "blink 1s step-end infinite",
-            }}
-          />
-        </div>
-        <div style={{ marginTop: 10, fontSize: 13, opacity: 0.6 }}>
-          Loading...
-        </div>
-      </div>
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-white"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+      >
+        <div className="introWrap">
+          {/* 텍스트(바탕: 연하게, 위: 와이프로 리빌) */}
+          <span className="introTitle">
+            {/* 바탕(연한 텍스트) */}
+            <span className="introTitleBase">
+              성과중심 <span className="orange">분양은만별.</span>
+            </span>
 
-      <style jsx>{`
-        @keyframes blink {
-          50% {
-            opacity: 0;
-          }
-        }
-      `}</style>
-    </div>
+            {/* 리빌(진한 텍스트) */}
+            <motion.span
+              className="introTitleReveal"
+              initial={{ clipPath: "inset(0 100% 0 0)" }}
+              animate={{ clipPath: "inset(0 0% 0 0)" }}
+              transition={{ duration: DURATION, ease: [0.22, 1, 0.36, 1] }}
+              onAnimationComplete={() => {
+                // 리빌 끝나고 사라짐
+                setTimeout(() => {
+                  sessionStorage.setItem("introDone", "1");
+                  setShow(false);
+                }, 220);
+              }}
+            >
+              성과중심 <span className="orange">분양은만별.</span>
+            </motion.span>
+
+            {/* 커서(따라가는 막대) */}
+            <motion.span
+              aria-hidden
+              className="introCursor"
+              initial={{ left: 0, opacity: 1 }}
+              animate={{ left: "100%", opacity: [1, 1, 0] }}
+              transition={{
+                duration: DURATION,
+                ease: [0.22, 1, 0.36, 1],
+                times: [0, 0.85, 1],
+              }}
+            />
+          </span>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
